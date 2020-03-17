@@ -7,21 +7,21 @@ int count = 0;
 void draw() {
   background(0);
   noStroke();
-  int N = 800;
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < N; j++) {
-      float x = map(i, 0, N, -2, 1);
-      float y = map(j, 0, 2*N/3, -1, 1);
+  loadPixels();
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      float x = map(i, 0, width, -2, 1);
+      float y = map(j, 0, height, -1, 1);
       Complex c = new Complex(x, y);
+      int loc = i + j * width;
       if (mandelbrot(c) == 0) {
-        fill(color(255, 204, 0));  // Use color variable 'c' as fill color
+        pixels[loc] = color(128);
       } else {
-        fill(255);
+        pixels[loc] = color(255);
       }
-      ellipse(i, j, 1, 1);
     }
   }
-  
+  updatePixels();
   count++;
 }
 
