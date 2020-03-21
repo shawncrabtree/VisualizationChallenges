@@ -47,17 +47,9 @@ int[] calculatePixels(){
       float x = map(i, 0, width, xMin, xMax);
       float y = map(j, 0, height, yMin, yMax);
       int loc = i + j * width;
-      if (dist(-.25, 0, x, y) < .5){
-        pixs[loc] = color(0);
-      }
-      else if (dist(-1, 0, x, y) < .25){
-        pixs[loc] = color(0);
-      }
-      else {
-        int mandelbrotVal = calcMandelbrot(x, y);
-        float colorInt = map(mandelbrotVal, 0, maxIterations, 0, 255);
-        pixs[loc] = color(colorInt);
-      }
+      int mandelbrotVal = calcMandelbrot(x, y);
+      float colorInt = map(mandelbrotVal, 0, maxIterations, 0, 255);
+      pixs[loc] = color(colorInt);
     }
   }
   return pixs;
