@@ -4,15 +4,13 @@ void setup(){
 }
 
 // Lower is more rain
-int rainRate = 4;
+int rainRate = 10;
 
-float growthRate = 4;
-int c = 0;
 ArrayList<Ripple> ripples = new ArrayList<Ripple>();
 void draw(){
-  
-  if (c % rainRate == 0){
-    ripples.add(new Ripple(random(0, width), random(0,height)));
+  // TODO: Perlin EVERYWHERE!!!
+  if (random(rainRate) < 1){
+    ripples.add(new Ripple(random(0, width), random(0,height), 1, 50));
   }
   
   
@@ -22,11 +20,9 @@ void draw(){
   ArrayList<Ripple> doneRipples = new ArrayList<Ripple>();
   for (Ripple ripple : ripples){
     ripple.draw();
-    if (!ripple.update(growthRate)){
+    if (!ripple.update()){
       doneRipples.add(ripple);
     }
   }
-  ripples.remove(doneRipples);
-  
-  c++;
+  ripples.removeAll(doneRipples);
 }

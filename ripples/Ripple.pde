@@ -1,37 +1,42 @@
 public class Ripple {
   public float x;
   public float y;
-  public float amplitude;
-  private int count = 1;
+  //public float amplitude;
+  private int count;
+  private float speed;
+  private int wavelength;
   public ArrayList<RippleRing> rings = new ArrayList<RippleRing>(); 
 
-  public Ripple(float _x, float _y) {
+  private static final int TTL = 200;
+
+  public Ripple(float _x, float _y, float _s, int _wv) {
     x = _x;
     y = _y;
-    amplitude = 12;
+    speed = _s; // pixels per frame
+    wavelength = _wv; // # of frames because constant velocity????
+    count = 0;
     rings.add(new RippleRing(0));
   }
 
   void draw() {
-    if (amplitude > 0) {
-      strokeWeight(amplitude);
-      for (RippleRing ring : rings) {
-        ellipse(x, y, ring.radius, ring.radius);
-      }
+    strokeWeight(1);
+    // TODO: Greyscale between the rings?
+    stroke(color(map(count, 0, TTL, 255, 0)));
+    for (RippleRing ring : rings) {
+      // TODO: Dampen more for bigger rings
+      ellipse(x, y, ring.radius, ring.radius);
     }
   }
 
-  boolean update(float growthRate) {
+  boolean update() {
     for (RippleRing ring : rings) {
-      ring.radius += growthRate;
-
+      ring.radius += speed;
     }
-    if (count % 20 == 0) {
+    if (count % wavelength == 0) { // wavelength in units of frames because constant velocity?????????
       rings.add(new RippleRing(0));
     }
     count++;
-    amplitude -= .2;
-    return amplitude <= 0;
+    return count <= TTL;
   }
 
   private class RippleRing {
