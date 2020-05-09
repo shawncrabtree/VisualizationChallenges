@@ -2,7 +2,7 @@ import java.util.*;
 
 TileSet aliveTiles = new TileSet();
 
-int n = 75;
+int n = 150;
 
 void setup() {
 
@@ -10,7 +10,7 @@ void setup() {
 
   for (int i = n/4; i < n*3/4; i++) {
     for (int j = n/4; j < n*3/4; j++) {
-      if (random(0, 10) < 5) {
+      if (random(0, 10) < 2) {
         aliveTiles.add(new Tile(i, j));
       }
     }
@@ -52,5 +52,4 @@ void draw() {
 
 
   aliveTiles = nextAliveTiles;
-  delay(50);
 }
