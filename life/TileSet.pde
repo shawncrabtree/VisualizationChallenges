@@ -21,7 +21,7 @@ public class TileSet {
   public void initializeRandom() {
     for (int i = xSize/4; i < xSize*3/4; i++) {
       for (int j = ySize/4; j < ySize*3/4; j++) {
-        if (random(0, 10) < 2) {
+        if (noise(i, j) >= .6) {
           tiles[i][j].isAlive = true;
         }
       }
