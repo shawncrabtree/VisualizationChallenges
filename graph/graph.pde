@@ -35,7 +35,7 @@ void draw() {
 
   textFont(f, 32);
   fill(255);
-  text("Click and drag!!", 10, 100);
+  text("Make a Cube!!!", 10, 100);
 
   for (Point p : points) {
     p.draw();
