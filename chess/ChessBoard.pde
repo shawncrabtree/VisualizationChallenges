@@ -9,6 +9,10 @@ public class ChessBoard {
     initialize();
   }
 
+  public ChessPiece getPiece(int i, int j) {
+    return board[i][j];
+  }
+
   void draw() {
     // draw lines
     for (int i = 1; i < 8; i ++) {
@@ -24,11 +28,28 @@ public class ChessBoard {
         }
       }
     }
-    ArrayList<Integer[]> possibleMoves = board[2][1].getPossibleMoves(2, 1);
-    for (Integer[] move : possibleMoves) {
+  }
+  
+  ArrayList<Integer[]> getPossibleMoves(int i, int j){
+    ChessPiece piece = board[i][j];
+    if (piece == null) {
+      return new ArrayList<Integer[]>();
+    }
+    return piece.getPossibleMoves(i, j);
+  }
+  
+
+  void drawMoves(ArrayList<Integer[]> moves) {
+    for (Integer[] move : moves) {
       circle((move[0] * width / 8) + 20, (move[1] * height / 8) + 20, 20);
     }
   }
+  
+  void move(int fromI, int fromJ, int toI, int toJ){
+    board[toI][toJ] = board[fromI][fromJ];
+    board[fromI][fromJ] = null;
+  }
+  
   void initialize() {
     board = new ChessPiece[8][8];
     board[0][1] = new Pawn(Color.Black);

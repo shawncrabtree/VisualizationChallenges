@@ -64,6 +64,16 @@ public class Bishop extends ChessPiece {
   public int getValue() { 
     return 5;
   }
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j) {
+    ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
+    for (int tempI = 0; tempI < 8; tempI++){
+      rv.add(new Integer[] {tempI, j});
+    }
+      for (int tempJ = 0; tempJ < 8; tempJ++){
+      rv.add(new Integer[] {i, tempJ});
+    }
+    return rv;
+  }
 }
 public class Queen extends ChessPiece {
   public Queen(Color c) { 
