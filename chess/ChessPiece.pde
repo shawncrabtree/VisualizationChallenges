@@ -2,9 +2,10 @@
 public abstract class ChessPiece {
 
   public Color c;
-
+  public Boolean hasMoved;
   public ChessPiece(Color c) {
     this.c = c;
+    this.hasMoved = false;
   }
 
   public void draw(int x, int y) {
@@ -18,7 +19,7 @@ public abstract class ChessPiece {
 
   protected abstract int getValue();
 
-  public ArrayList<Integer[]> getPossibleMoves(int i, int j) {
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
     rv.add(new Integer[] {1, 1});
     return rv;
@@ -33,11 +34,26 @@ public class Pawn extends ChessPiece {
   public int getValue() { 
     return 1;
   }
-  public ArrayList<Integer[]> getPossibleMoves(int i, int j) {
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
     int factor = this.c == Color.Black ? 1 : -1;
-    rv.add(new Integer[] {i,  (j + factor*1)});
-    rv.add(new Integer[] {i, (j + factor*2)});
+
+    ChessPiece piece = board.getPiece(i+1, (j + factor));
+    if (piece != null) {
+      rv.add(new Integer[] {i+1, (j + factor)});
+    }
+    piece = board.getPiece(i-1, (j + factor));
+    if (piece != null) {
+      rv.add(new Integer[] {i-1, (j + factor)});
+    }
+    piece = board.getPiece(i, (j + factor));
+    if (piece == null) {
+      rv.add(new Integer[] {i, (j + factor)});
+      piece = board.getPiece(i, (j + factor*2));
+      if (!this.hasMoved && piece == null) {
+        rv.add(new Integer[] {i, (j + factor*2)});
+      }
+    }
     return rv;
   }
 }
@@ -64,12 +80,12 @@ public class Bishop extends ChessPiece {
   public int getValue() { 
     return 5;
   }
-  public ArrayList<Integer[]> getPossibleMoves(int i, int j) {
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
-    for (int tempI = 0; tempI < 8; tempI++){
+    for (int tempI = 0; tempI < 8; tempI++) {
       rv.add(new Integer[] {tempI, j});
     }
-      for (int tempJ = 0; tempJ < 8; tempJ++){
+    for (int tempJ = 0; tempJ < 8; tempJ++) {
       rv.add(new Integer[] {i, tempJ});
     }
     return rv;

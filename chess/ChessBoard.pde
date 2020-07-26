@@ -35,7 +35,7 @@ public class ChessBoard {
     if (piece == null) {
       return new ArrayList<Integer[]>();
     }
-    return piece.getPossibleMoves(i, j);
+    return piece.getPossibleMoves(i, j, this);
   }
   
 
@@ -46,8 +46,10 @@ public class ChessBoard {
   }
   
   void move(int fromI, int fromJ, int toI, int toJ){
-    board[toI][toJ] = board[fromI][fromJ];
+    ChessPiece piece = board[fromI][fromJ];
+    board[toI][toJ] = piece;
     board[fromI][fromJ] = null;
+    piece.hasMoved = true;
   }
   
   void initialize() {
