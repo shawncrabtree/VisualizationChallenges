@@ -10,7 +10,7 @@ public abstract class ChessPiece {
 
   public void draw(int x, int y) {
     fill(c == Color.White ? 255 : 0);
-    text(this.toString(), (x * width / 8) + 20, (y * height / 8) - 20);
+    text(this.toString(), (x * width / 8) + 20, (y * height / 8) - 50);
   }
   public String toString() {
     String className = this.getClass().getName();
@@ -64,6 +64,42 @@ public class Rook extends ChessPiece {
   public int getValue() { 
     return 3;
   }
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
+    ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
+    int ind = 1;
+    for (int tempI = i-1; tempI >= 0; tempI--) {
+      if (board.getPiece(tempI, j+ind) != null) {
+        break;
+      }
+      rv.add(new Integer[] {tempI, j+ind});
+      ind++;
+    }
+    ind = 1;
+    for (int tempI = i+1; tempI < 8; tempI++) {
+      if (board.getPiece(tempI, j-ind) != null) {
+        break;
+      }
+      rv.add(new Integer[] {tempI, j-ind});
+      ind++;
+    }
+    ind = 1;
+    for (int tempJ = j-1; tempJ >= 0; tempJ--) {
+      if (board.getPiece(i-ind, tempJ) != null) {
+        break;
+      }
+      rv.add(new Integer[] {i - ind, tempJ});
+      ind++;
+    }
+    ind = 1;
+    for (int tempJ = j+1; tempJ < 8; tempJ++) {
+      if (board.getPiece(i+ind, tempJ) != null) {
+        break;
+      }
+      rv.add(new Integer[] {i + ind, tempJ});
+      ind++;
+    }
+    return rv;
+  }
 }
 public class Knight extends ChessPiece {
   public Knight(Color c) { 
@@ -82,10 +118,28 @@ public class Bishop extends ChessPiece {
   }
   public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
-    for (int tempI = 0; tempI < 8; tempI++) {
+    for (int tempI = i-1; tempI >= 0; tempI--) {
+      if (board.getPiece(tempI, j) != null) {
+        break;
+      }
       rv.add(new Integer[] {tempI, j});
     }
-    for (int tempJ = 0; tempJ < 8; tempJ++) {
+    for (int tempI = i+1; tempI < 8; tempI++) {
+      if (board.getPiece(tempI, j) != null) {
+        break;
+      }
+      rv.add(new Integer[] {tempI, j});
+    }
+    for (int tempJ = j-1; tempJ >= 0; tempJ--) {
+      if (board.getPiece(i, tempJ) != null) {
+        break;
+      }
+      rv.add(new Integer[] {i, tempJ});
+    }
+    for (int tempJ = j+1; tempJ < 8; tempJ++) {
+      if (board.getPiece(i, tempJ) != null) {
+        break;
+      }
       rv.add(new Integer[] {i, tempJ});
     }
     return rv;
@@ -104,11 +158,9 @@ public class King extends ChessPiece {
     super(c);
   }
   public int getValue() { 
-    return 200;
+    return 1000;
   }
 }
-
-
 
 public enum Color {
   Black, 

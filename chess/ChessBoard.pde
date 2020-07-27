@@ -1,16 +1,20 @@
 
-
-
 public class ChessBoard {
 
   private ChessPiece[][] board;
-
+  HashMap<Color, Integer> scores;
   public ChessBoard() {
+    scores = new HashMap<Color, Integer>();
+    scores.put(Color.White, 0);
+    scores.put(Color.Black, 0);
     initialize();
   }
 
   public ChessPiece getPiece(int i, int j) {
-    return board[i][j];
+    if (0 <= i && i < 8 && 0 <= j && j < 8) {
+      return board[i][j];
+    }
+    return null;
   }
 
   void draw() {
@@ -28,30 +32,40 @@ public class ChessBoard {
         }
       }
     }
+    fill(0);
+    text(this.scores.get(Color.Black).toString(), 20, 20);
+    fill(255);
+    text(this.scores.get(Color.White).toString(), 20, height - 20);
   }
-  
-  ArrayList<Integer[]> getPossibleMoves(int i, int j){
+
+  ArrayList<Integer[]> getPossibleMoves(int i, int j) {
     ChessPiece piece = board[i][j];
     if (piece == null) {
       return new ArrayList<Integer[]>();
     }
     return piece.getPossibleMoves(i, j, this);
   }
-  
+
 
   void drawMoves(ArrayList<Integer[]> moves) {
     for (Integer[] move : moves) {
       circle((move[0] * width / 8) + 20, (move[1] * height / 8) + 20, 20);
     }
   }
-  
-  void move(int fromI, int fromJ, int toI, int toJ){
+
+  void move(int fromI, int fromJ, int toI, int toJ) {
     ChessPiece piece = board[fromI][fromJ];
+    ChessPiece takenPiece = board[toI][toJ];
+    if (takenPiece != null){
+      int score = this.scores.get(takenPiece.c);
+      score = score - takenPiece.getValue();
+      this.scores.put(takenPiece.c, score);
+    }
     board[toI][toJ] = piece;
     board[fromI][fromJ] = null;
     piece.hasMoved = true;
   }
-  
+
   void initialize() {
     board = new ChessPiece[8][8];
     board[0][1] = new Pawn(Color.Black);
@@ -86,5 +100,15 @@ public class ChessBoard {
     board[5][7] = new Rook(Color.White);
     board[6][7] = new Knight(Color.White);
     board[7][7] = new Bishop(Color.White);
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+        ChessPiece piece = this.getPiece(i, j);
+        if (piece != null) {
+          int score = this.scores.get(piece.c);
+          score += piece.getValue();
+          this.scores.put(piece.c, score);
+        }
+      }
+    }
   }
 }
