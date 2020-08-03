@@ -39,11 +39,11 @@ public class Pawn extends ChessPiece {
     int factor = this.c == Color.Black ? 1 : -1;
 
     ChessPiece piece = board.getPiece(i+1, (j + factor));
-    if (piece != null) {
+    if (piece != null && piece.c != this.c) {
       rv.add(new Integer[] {i+1, (j + factor)});
     }
     piece = board.getPiece(i-1, (j + factor));
-    if (piece != null) {
+    if (piece != null  && piece.c != this.c) {
       rv.add(new Integer[] {i-1, (j + factor)});
     }
     piece = board.getPiece(i, (j + factor));
@@ -68,7 +68,11 @@ public class Rook extends ChessPiece {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
     int ind = 1;
     for (int tempI = i-1; tempI >= 0; tempI--) {
-      if (board.getPiece(tempI, j+ind) != null) {
+      ChessPiece piece = board.getPiece(tempI, j+ind);
+      if (piece != null) {
+        if (piece.c != this.c) {
+          rv.add(new Integer[] {tempI, j+ind});
+        }
         break;
       }
       rv.add(new Integer[] {tempI, j+ind});
@@ -76,7 +80,11 @@ public class Rook extends ChessPiece {
     }
     ind = 1;
     for (int tempI = i+1; tempI < 8; tempI++) {
-      if (board.getPiece(tempI, j-ind) != null) {
+      ChessPiece piece = board.getPiece(tempI, j-ind);
+      if (piece != null) {
+        if (piece.c != this.c) {
+          rv.add(new Integer[] {tempI, j-ind});
+        }
         break;
       }
       rv.add(new Integer[] {tempI, j-ind});
@@ -84,7 +92,11 @@ public class Rook extends ChessPiece {
     }
     ind = 1;
     for (int tempJ = j-1; tempJ >= 0; tempJ--) {
-      if (board.getPiece(i-ind, tempJ) != null) {
+      ChessPiece piece = board.getPiece(i-ind, tempJ);
+      if (piece != null) {
+        if (piece.c != this.c) {
+          rv.add(new Integer[] {i - ind, tempJ});
+        }
         break;
       }
       rv.add(new Integer[] {i - ind, tempJ});
@@ -92,7 +104,11 @@ public class Rook extends ChessPiece {
     }
     ind = 1;
     for (int tempJ = j+1; tempJ < 8; tempJ++) {
-      if (board.getPiece(i+ind, tempJ) != null) {
+      ChessPiece piece = board.getPiece(i+ind, tempJ);
+      if (piece != null) {
+        if (piece.c != this.c) {
+          rv.add(new Integer[] {i + ind, tempJ});
+        }
         break;
       }
       rv.add(new Integer[] {i + ind, tempJ});
