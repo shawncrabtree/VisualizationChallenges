@@ -135,25 +135,41 @@ public class Bishop extends ChessPiece {
   public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
     ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
     for (int tempI = i-1; tempI >= 0; tempI--) {
-      if (board.getPiece(tempI, j) != null) {
+      ChessPiece piece = board.getPiece(tempI, j);
+      if (piece != null) {
+        if (piece.c != this.c){
+          rv.add(new Integer[] {tempI, j});
+        }
         break;
       }
       rv.add(new Integer[] {tempI, j});
     }
     for (int tempI = i+1; tempI < 8; tempI++) {
-      if (board.getPiece(tempI, j) != null) {
+      ChessPiece piece = board.getPiece(tempI, j);
+      if (piece != null) {
+        if (piece.c != this.c){
+          rv.add(new Integer[] {tempI, j});
+        }
         break;
       }
       rv.add(new Integer[] {tempI, j});
     }
     for (int tempJ = j-1; tempJ >= 0; tempJ--) {
-      if (board.getPiece(i, tempJ) != null) {
+      ChessPiece piece = board.getPiece(i, tempJ);
+      if (piece != null) {
+        if (piece.c != this.c){
+          rv.add(new Integer[] {i, tempJ});
+        }
         break;
       }
       rv.add(new Integer[] {i, tempJ});
     }
     for (int tempJ = j+1; tempJ < 8; tempJ++) {
-      if (board.getPiece(i, tempJ) != null) {
+      ChessPiece piece = board.getPiece(i, tempJ);
+      if (piece != null) {
+        if (piece.c != this.c){
+          rv.add(new Integer[] {i, tempJ});
+        }
         break;
       }
       rv.add(new Integer[] {i, tempJ});
