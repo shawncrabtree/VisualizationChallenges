@@ -124,6 +124,29 @@ public class Knight extends ChessPiece {
   public int getValue() { 
     return 3;
   }
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
+    ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
+    tryAddMove(rv, i+1, j+2, board);
+    tryAddMove(rv, i-1, j+2, board);
+    tryAddMove(rv, i+1, j-2, board);
+    tryAddMove(rv, i-1, j-2, board);
+    tryAddMove(rv, i+2, j+1, board);
+    tryAddMove(rv, i-2, j+1, board);
+    tryAddMove(rv, i+2, j-1, board);
+    tryAddMove(rv, i-2, j-1, board);
+    return rv;
+  }
+  private Boolean pointOnBoard(int i, int j){
+    return i < 8 && j < 8 && i >= 0 && j >= 0;
+  }
+  private void tryAddMove(ArrayList<Integer[]>arr, int i, int j, ChessBoard board){
+    if (pointOnBoard(i, j)){
+      ChessPiece piece = board.getPiece(i, j);
+      if (piece == null || piece.c != this.c){
+        arr.add(new Integer[] {i, j});
+      }
+    }
+  }
 }
 public class Bishop extends ChessPiece {
   public Bishop(Color c) { 
@@ -137,7 +160,7 @@ public class Bishop extends ChessPiece {
     for (int tempI = i-1; tempI >= 0; tempI--) {
       ChessPiece piece = board.getPiece(tempI, j);
       if (piece != null) {
-        if (piece.c != this.c){
+        if (piece.c != this.c) {
           rv.add(new Integer[] {tempI, j});
         }
         break;
@@ -147,7 +170,7 @@ public class Bishop extends ChessPiece {
     for (int tempI = i+1; tempI < 8; tempI++) {
       ChessPiece piece = board.getPiece(tempI, j);
       if (piece != null) {
-        if (piece.c != this.c){
+        if (piece.c != this.c) {
           rv.add(new Integer[] {tempI, j});
         }
         break;
@@ -157,7 +180,7 @@ public class Bishop extends ChessPiece {
     for (int tempJ = j-1; tempJ >= 0; tempJ--) {
       ChessPiece piece = board.getPiece(i, tempJ);
       if (piece != null) {
-        if (piece.c != this.c){
+        if (piece.c != this.c) {
           rv.add(new Integer[] {i, tempJ});
         }
         break;
@@ -167,7 +190,7 @@ public class Bishop extends ChessPiece {
     for (int tempJ = j+1; tempJ < 8; tempJ++) {
       ChessPiece piece = board.getPiece(i, tempJ);
       if (piece != null) {
-        if (piece.c != this.c){
+        if (piece.c != this.c) {
           rv.add(new Integer[] {i, tempJ});
         }
         break;
@@ -183,6 +206,12 @@ public class Queen extends ChessPiece {
   }
   public int getValue() { 
     return 9;
+  }
+  public ArrayList<Integer[]> getPossibleMoves(int i, int j, ChessBoard board) {
+    ArrayList<Integer[]> rv = new ArrayList<Integer[]>();
+    rv.addAll(new Bishop(this.c).getPossibleMoves(i, j, board));
+    rv.addAll(new Rook(this.c).getPossibleMoves(i, j, board));
+    return rv;
   }
 }
 public class King extends ChessPiece {
