@@ -2,12 +2,24 @@
 public class ChessBoard {
 
   private ChessPiece[][] board;
-  HashMap<Color, Integer> scores;
+  private int whiteScore;
+  private int blackScore;
   public ChessBoard() {
-    scores = new HashMap<Color, Integer>();
-    scores.put(Color.White, 0);
-    scores.put(Color.Black, 0);
     initialize();
+  }
+
+  public ChessBoard(ChessBoard b) {
+    board = new ChessPiece[8][8];
+    this.whiteScore = b.whiteScore;
+    this.blackScore = b.blackScore;
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+        ChessPiece piece = b.getPiece(i, j);
+        if (piece != null) {
+          board[i][j] = (ChessPiece)piece.cloneMe();
+        }
+      }
+    }
   }
 
   public ChessPiece getPiece(int i, int j) {
@@ -33,37 +45,114 @@ public class ChessBoard {
       }
     }
     fill(0);
-    text(this.scores.get(Color.Black).toString(), 20, 20);
+    text(Integer.toString(this.getScore(Color.Black)), 20, 20);
     fill(255);
-    text(this.scores.get(Color.White).toString(), 20, height - 20);
+    text(Integer.toString(this.getScore(Color.White)), 20, height - 20);
   }
 
-  ArrayList<Integer[]> getPossibleMoves(int i, int j) {
+  ArrayList<ChessMove> getPossibleMoves(int i, int j) {
     ChessPiece piece = board[i][j];
     if (piece == null) {
-      return new ArrayList<Integer[]>();
+      return new ArrayList<ChessMove>();
     }
     return piece.getPossibleMoves(i, j, this);
   }
 
-
-  void drawMoves(ArrayList<Integer[]> moves) {
-    for (Integer[] move : moves) {
-      circle((move[0] * width / 8) + 20, (move[1] * height / 8) + 20, 20);
+  ArrayList<ChessMove> getPossibleMoves(Color c) {
+    ArrayList<ChessMove> rv = new ArrayList<ChessMove>();
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+        ChessPiece p = board[i][j];
+        if (p != null && p.c == c) {
+          rv.addAll(getPossibleMoves(i, j));
+        }
+      }
     }
+    return rv;
+  }
+
+
+  void drawMoves(ArrayList<ChessMove> moves) {
+    for (ChessMove move : moves) {
+      circle((move.toI * width / 8) + 20, (move.toJ * height / 8) + 20, 20);
+    }
+  }
+
+  void move(ChessMove move) {
+    print("\n");
+    print(move.piece.getClass().getName());
+    print("to: " + move.toI + " " + move.toJ);
+    move(move.fromI, move.fromJ, move.toI, move.toJ);
   }
 
   void move(int fromI, int fromJ, int toI, int toJ) {
     ChessPiece piece = board[fromI][fromJ];
     ChessPiece takenPiece = board[toI][toJ];
-    if (takenPiece != null){
-      int score = this.scores.get(takenPiece.c);
+    if (takenPiece != null) {
+      int score = this.getScore(takenPiece.c);
       score = score - takenPiece.getValue();
-      this.scores.put(takenPiece.c, score);
+      this.setScore(takenPiece.c, score);
     }
     board[toI][toJ] = piece;
     board[fromI][fromJ] = null;
     piece.hasMoved = true;
+  }
+
+  Boolean wins(Color c) {
+    Color other = c == Color.White ? Color.Black : Color.White;
+    return this.getScore(other) < 999;
+  }
+
+  ChessBoard computerPlay(Color c) {
+    return miniMax(c, 0);
+  }
+
+  private ChessBoard miniMax(Color c, int depth) {
+    // endstate
+    if (this.wins(c)) {
+      return this;
+    }
+    if (depth == 3) {
+      return this;
+    }
+    Color otherC = c == Color.White ? Color.Black : Color.White;
+    // recurse for each possible next game state
+    ArrayList<ChessMove> moves = getPossibleMoves(c);
+    ArrayList<ChessBoard> possibleBoards = new ArrayList<ChessBoard>();
+    for (ChessMove move : moves) {
+      ChessBoard cloneBoard = new ChessBoard(this);
+      cloneBoard.move(move);
+      possibleBoards.add(cloneBoard);
+      cloneBoard.miniMax(otherC, depth+1);
+    }
+    return getBest(c, possibleBoards);
+  }
+
+  ChessBoard getBest(Color c, ArrayList<ChessBoard> boards) {
+    ChessBoard biggest = boards.get(0);
+    int biggestDiff = -9999;
+    for (int i = 0; i < boards.size(); i++) {
+      ChessBoard b = boards.get(i);
+      int diff = b.getScore(c) - b.getScore(c == Color.White ? Color.Black : Color.White);
+      if (diff > biggestDiff){
+        biggest = b;
+        biggestDiff = diff;
+      }
+    }
+    return biggest;
+  }
+
+  void setScore(Color c, int score) {
+    print(c + " Score: " + score);
+    if (c == Color.White) {
+      whiteScore = score;
+    } else {
+      blackScore = score;
+    }
+  }
+
+  int getScore(Color c) {
+    return c == Color.White ? whiteScore : blackScore;
   }
 
   void initialize() {
@@ -104,9 +193,9 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece piece = this.getPiece(i, j);
         if (piece != null) {
-          int score = this.scores.get(piece.c);
+          int score = this.getScore(piece.c);
           score += piece.getValue();
-          this.scores.put(piece.c, score);
+          this.setScore(piece.c, score);
         }
       }
     }
