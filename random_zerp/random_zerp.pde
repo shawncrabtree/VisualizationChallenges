@@ -2,14 +2,14 @@
 PVector p1, p2, p3, current;
 
 void setup(){
-  size(800, 800);
+  fullScreen();
   background(0);
   stroke(255);
   strokeWeight(1);
-  p1 = new PVector(int(random(200, 600)), int(random(200)));
-  p2 = new PVector(int(random(200)), int(random(600, 800)));
-  p3 = new PVector(int(random(600, 800)), int(random(600, 800)));  
-  current = new PVector(400, 400);
+  p1 = new PVector(width/2, 100);
+  p2 = new PVector(100, height-100);
+  p3 = new PVector(width-100, height-100);  
+  current = new PVector(int(random(width)), int(random(height)));
   drawPoint(p1);
   drawPoint(p2);
   drawPoint(p3);
