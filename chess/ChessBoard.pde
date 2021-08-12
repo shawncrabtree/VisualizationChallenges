@@ -2,8 +2,8 @@
 public class ChessBoard {
 
   private ChessPiece[][] board;
-  private int whiteScore;
-  private int blackScore;
+  private float whiteScore;
+  private float blackScore;
   public ChessBoard() {
     initialize();
   }
@@ -45,9 +45,9 @@ public class ChessBoard {
       }
     }
     fill(0);
-    text(Integer.toString(this.getScore(Color.Black)), 20, 20);
+    text(Double.toString(this.getScore(Color.Black)), 20, 20);
     fill(255);
-    text(Integer.toString(this.getScore(Color.White)), 20, height - 20);
+    text(Double.toString(this.getScore(Color.White)), 20, height - 20);
   }
 
   ArrayList<ChessMove> getPossibleMoves(int i, int j) {
@@ -89,9 +89,9 @@ public class ChessBoard {
     ChessPiece piece = board[fromI][fromJ];
     ChessPiece takenPiece = board[toI][toJ];
     if (takenPiece != null) {
-      int score = this.getScore(takenPiece.c);
+      float score = this.getScore(takenPiece.c);
       score = score - takenPiece.getValue();
-      this.setScore(takenPiece.c, score);
+      this.setScore(takenPiece.c, score + random(2));
     }
     board[toI][toJ] = piece;
     board[fromI][fromJ] = null;
@@ -104,7 +104,10 @@ public class ChessBoard {
   }
 
   ChessBoard computerPlay(Color c) {
-    return miniMax(c, 0);
+    ChessMove move = new RandomStrategy().chooseMove(this, c);
+    move(move);
+    return this;
+    //return miniMax(c, 0);
   }
 
   private ChessBoard miniMax(Color c, int depth) {
@@ -130,10 +133,10 @@ public class ChessBoard {
 
   ChessBoard getBest(Color c, ArrayList<ChessBoard> boards) {
     ChessBoard biggest = boards.get(0);
-    int biggestDiff = -9999;
+    float biggestDiff = -9999;
     for (int i = 0; i < boards.size(); i++) {
       ChessBoard b = boards.get(i);
-      int diff = b.getScore(c) - b.getScore(c == Color.White ? Color.Black : Color.White);
+      float diff = b.getScore(c) - b.getScore(c == Color.White ? Color.Black : Color.White);
       if (diff > biggestDiff){
         biggest = b;
         biggestDiff = diff;
@@ -142,7 +145,7 @@ public class ChessBoard {
     return biggest;
   }
 
-  void setScore(Color c, int score) {
+  void setScore(Color c, float score) {
     print(c + " Score: " + score);
     if (c == Color.White) {
       whiteScore = score;
@@ -151,7 +154,7 @@ public class ChessBoard {
     }
   }
 
-  int getScore(Color c) {
+  float getScore(Color c) {
     return c == Color.White ? whiteScore : blackScore;
   }
 
@@ -193,7 +196,7 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece piece = this.getPiece(i, j);
         if (piece != null) {
-          int score = this.getScore(piece.c);
+          float score = this.getScore(piece.c);
           score += piece.getValue();
           this.setScore(piece.c, score);
         }
