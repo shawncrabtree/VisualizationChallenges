@@ -21,11 +21,7 @@ public abstract class ChessPiece implements Cloneable {
       return null;
     }
   }
-
-  public void draw(int x, int y) {
-    fill(c == Color.White ? 255 : 0);
-    text(this.toString(), (x * width / 8) + 20, (y * height / 8) - 50);
-  }
+  
   public String toString() {
     String className = this.getClass().getName();
     return className.substring(6, className.length());

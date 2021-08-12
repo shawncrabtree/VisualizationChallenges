@@ -4,6 +4,11 @@ public class ChessBoard {
   private ChessPiece[][] board;
   private float whiteScore;
   private float blackScore;
+  private int lastFromI;
+  private int lastFromJ;
+  private int lastToI;
+  private int lastToJ;
+  
   public ChessBoard() {
     initialize();
   }
@@ -40,14 +45,26 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece p = board[i][j];
         if (p != null) {
-          p.draw(i, j+1);
+          drawString(p.toString(), p.c == Color.White ? 255 : 0, i, j+1);
         }
       }
     }
+    // draw last move
+    fill(204, 102, 0);
+    drawString("AH", this.lastFromI, this.lastFromJ + 1);
     fill(0);
     text(Double.toString(this.getScore(Color.Black)), 20, 20);
     fill(255);
     text(Double.toString(this.getScore(Color.White)), 20, height - 20);
+  }
+
+  private void drawString(String s, int colorInt, int x, int y) {
+    fill(colorInt);
+    drawString(s, x, y); //;)
+  }
+  
+  private void drawString(String s, int x, int y){
+    text(s, (x * width / 8) + 20, (y * height / 8) - 50);
   }
 
   ArrayList<ChessMove> getPossibleMoves(int i, int j) {
@@ -86,6 +103,8 @@ public class ChessBoard {
   }
 
   void move(int fromI, int fromJ, int toI, int toJ) {
+    lastFromI = fromI; lastFromJ = fromJ;
+    lastToI = toI; lastToJ = toJ;
     ChessPiece piece = board[fromI][fromJ];
     ChessPiece takenPiece = board[toI][toJ];
     if (takenPiece != null) {
@@ -104,32 +123,14 @@ public class ChessBoard {
   }
 
   ChessBoard computerPlay(Color c) {
+    //MinimaxStrategy,RandomStrategy
     ChessMove move = new RandomStrategy().chooseMove(this, c);
     move(move);
     return this;
     //return miniMax(c, 0);
   }
 
-  private ChessBoard miniMax(Color c, int depth) {
-    // endstate
-    if (this.wins(c)) {
-      return this;
-    }
-    if (depth == 3) {
-      return this;
-    }
-    Color otherC = c == Color.White ? Color.Black : Color.White;
-    // recurse for each possible next game state
-    ArrayList<ChessMove> moves = getPossibleMoves(c);
-    ArrayList<ChessBoard> possibleBoards = new ArrayList<ChessBoard>();
-    for (ChessMove move : moves) {
-      ChessBoard cloneBoard = new ChessBoard(this);
-      cloneBoard.move(move);
-      possibleBoards.add(cloneBoard);
-      cloneBoard.miniMax(otherC, depth+1);
-    }
-    return getBest(c, possibleBoards);
-  }
+  
 
   ChessBoard getBest(Color c, ArrayList<ChessBoard> boards) {
     ChessBoard biggest = boards.get(0);
