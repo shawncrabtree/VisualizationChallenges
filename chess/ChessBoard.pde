@@ -4,10 +4,8 @@ public class ChessBoard {
   private ChessPiece[][] board;
   private float whiteScore;
   private float blackScore;
-  private int lastFromI;
-  private int lastFromJ;
-  private int lastToI;
-  private int lastToJ;
+  private int lastI;
+  private int lastJ;
   
   public ChessBoard() {
     initialize();
@@ -51,7 +49,7 @@ public class ChessBoard {
     }
     // draw last move
     fill(204, 102, 0);
-    drawString("AH", this.lastFromI, this.lastFromJ + 1);
+    drawString("AH", this.lastI, this.lastJ + 1);
     fill(0);
     text(Double.toString(this.getScore(Color.Black)), 20, 20);
     fill(255);
@@ -103,8 +101,7 @@ public class ChessBoard {
   }
 
   void move(int fromI, int fromJ, int toI, int toJ) {
-    lastFromI = fromI; lastFromJ = fromJ;
-    lastToI = toI; lastToJ = toJ;
+    lastI = fromI; lastJ = fromJ;
     ChessPiece piece = board[fromI][fromJ];
     ChessPiece takenPiece = board[toI][toJ];
     if (takenPiece != null) {
