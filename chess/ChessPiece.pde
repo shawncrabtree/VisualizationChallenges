@@ -50,6 +50,7 @@ public abstract class ChessPiece implements Cloneable {
   public PImage getImage(){
     if (!hasImageLoaded){
        image = loadImage("./Images/" + (this.c == Color.White ? "White" : "Black" ) + this.toString() + ".png");
+       image.resize(100, 100);
        hasImageLoaded = true;
     }
     return image;
