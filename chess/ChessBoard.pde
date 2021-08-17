@@ -55,7 +55,10 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece p = board[i][j];
         if (p != null) {
-          drawString(p.toString() + " " + getDisplayString(i, j), p.c == Color.White ? 255 : 0, i, j+1);
+          PImage image = p.getImage();
+          if (image != null){    
+            image(image, i * width / 8, j * width / 8);
+          }
         }
       }
     }
@@ -185,22 +188,22 @@ public class ChessBoard {
     board[5][6] = new Pawn(Color.White);
     board[6][6] = new Pawn(Color.White);
     board[7][6] = new Pawn(Color.White);
-    board[0][0] = new Bishop(Color.Black);
+    board[0][0] = new Rook(Color.Black);
     board[1][0] = new Knight(Color.Black);
-    board[2][0] = new Rook(Color.Black);
+    board[2][0] = new Bishop(Color.Black);
     board[3][0] = new King(Color.Black);
     board[4][0] = new Queen(Color.Black);
-    board[5][0] = new Rook(Color.Black);
+    board[5][0] = new Bishop(Color.Black);
     board[6][0] = new Knight(Color.Black);
-    board[7][0] = new Bishop(Color.Black);
-    board[0][7] = new Bishop(Color.White);
+    board[7][0] = new Rook(Color.Black);
+    board[0][7] = new Rook(Color.White);
     board[1][7] = new Knight(Color.White);
-    board[2][7] = new Rook(Color.White);
+    board[2][7] = new Bishop(Color.White);
     board[3][7] = new King(Color.White);
     board[4][7] = new Queen(Color.White);
-    board[5][7] = new Rook(Color.White);
+    board[5][7] = new Bishop(Color.White);
     board[6][7] = new Knight(Color.White);
-    board[7][7] = new Bishop(Color.White);
+    board[7][7] = new Rook(Color.White);
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
         ChessPiece piece = this.getPiece(i, j);

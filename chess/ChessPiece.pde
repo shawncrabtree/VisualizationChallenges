@@ -28,6 +28,8 @@ public abstract class ChessPiece implements Cloneable {
   }
 
   protected abstract int getValue();
+  protected int imgXIndex(){ return 0; }
+  protected int imgYIndex(){ return 0; }
   public abstract ArrayList<ChessMove> getPossibleMoves(int i, int j, ChessBoard board);
 
   protected Boolean pointOnBoard(int i, int j) {
@@ -41,8 +43,18 @@ public abstract class ChessPiece implements Cloneable {
       }
     }
   }
+  
+  private PImage image = null;
+  // Temp. For handling null temporarily
+  private Boolean hasImageLoaded = false;
+  public PImage getImage(){
+    if (!hasImageLoaded){
+       image = loadImage("./Images/" + (this.c == Color.White ? "White" : "Black" ) + this.toString() + ".png");
+       hasImageLoaded = true;
+    }
+    return image;
+  }
 }
-
 
 public class Pawn extends ChessPiece {
   public Pawn(Color c) { 
@@ -75,9 +87,12 @@ public class Pawn extends ChessPiece {
     }
     return rv;
   }
+  
+  protected int imgXIndex(){ return 0; }
+  protected int imgYIndex(){ return this.c == Color.Black ? 1 : 0; }
 }
-public class Rook extends ChessPiece {
-  public Rook(Color c) { 
+public class Bishop extends ChessPiece {
+  public Bishop(Color c) { 
     super(c);
   }
   public int getValue() { 
@@ -156,8 +171,8 @@ public class Knight extends ChessPiece {
     return rv;
   }
 }
-public class Bishop extends ChessPiece {
-  public Bishop(Color c) { 
+public class Rook extends ChessPiece {
+  public Rook(Color c) { 
     super(c);
   }
   public int getValue() { 
