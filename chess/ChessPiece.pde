@@ -242,8 +242,3 @@ public class King extends ChessPiece {
     return rv;
   }
 }
-
-public enum Color {
-  Black, 
-    White
-}

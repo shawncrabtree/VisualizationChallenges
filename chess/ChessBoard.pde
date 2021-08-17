@@ -7,6 +7,10 @@ public class ChessBoard {
   private int lastI;
   private int lastJ;
   
+  
+  // Probz should put this somewhere else
+  IMoveStrategy moveStrategy = new AvoidAttacksStrategy();
+  
   public ChessBoard() {
     initialize();
   }
@@ -31,6 +35,14 @@ public class ChessBoard {
     }
     return null;
   }
+  
+  public String getDisplayString(int i, int j){
+    return ((char)('A' + i)) + (String.valueOf(8-j));
+  }
+  
+  public String getDisplayString(ChessMove move){
+    return getDisplayString(move.fromI, move.fromJ) + "->" + getDisplayString(move.toI, move.toJ);
+  }
 
   void draw() {
     // draw lines
@@ -43,7 +55,7 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece p = board[i][j];
         if (p != null) {
-          drawString(p.toString(), p.c == Color.White ? 255 : 0, i, j+1);
+          drawString(p.toString() + " " + getDisplayString(i, j), p.c == Color.White ? 255 : 0, i, j+1);
         }
       }
     }
@@ -86,7 +98,6 @@ public class ChessBoard {
     return rv;
   }
 
-
   void drawMoves(ArrayList<ChessMove> moves) {
     for (ChessMove move : moves) {
       circle((move.toI * width / 8) + 20, (move.toJ * height / 8) + 20, 20);
@@ -121,7 +132,7 @@ public class ChessBoard {
 
   ChessBoard computerPlay(Color c) {
     //MinimaxStrategy,RandomStrategy
-    ChessMove move = new RandomStrategy().chooseMove(this, c);
+    ChessMove move = this.moveStrategy.chooseMove(this, c);
     move(move);
     return this;
     //return miniMax(c, 0);

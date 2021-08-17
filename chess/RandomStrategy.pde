@@ -1,5 +1,5 @@
 
-public class RandomStrategy {
+public class RandomStrategy implements IMoveStrategy {
   
   public ChessMove chooseMove(ChessBoard current, Color c){
     ArrayList<ChessMove> possibleMoves = current.getPossibleMoves(c);
