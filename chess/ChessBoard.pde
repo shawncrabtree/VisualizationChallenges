@@ -55,6 +55,7 @@ public class ChessBoard {
       for (int j = 0; j < 8; j++) {
         ChessPiece p = board[i][j];
         if (p != null) {
+          drawString(this.getDisplayString(i, j), i, j+1);
           PImage image = p.getImage();
           if (image != null){    
             image(image, i * width / 8, j * width / 8);

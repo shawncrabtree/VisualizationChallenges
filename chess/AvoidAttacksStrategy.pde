@@ -1,6 +1,22 @@
 
 public class AvoidAttacksStrategy implements IMoveStrategy {
   
+  private Boolean isAttackingMove(ChessBoard current, ChessMove move){
+    ChessPiece attackedPiece = current.getPiece(move.toI, move.toJ);
+    return attackedPiece != null;
+  }
+  
+  private ArrayList<ChessMove> getAttackingMoves(ChessBoard current, Color c){
+        ArrayList<ChessMove> moves = current.getPossibleMoves(c);
+        ArrayList<ChessMove> attackingMoves = new ArrayList<ChessMove>();
+        for (ChessMove move : moves){
+          if (isAttackingMove(current, move)){
+            attackingMoves.add(move);
+          }
+        }
+        return attackingMoves;
+  }
+  
   public ChessMove chooseMove(ChessBoard current, Color c){
     println("HERE");
     ArrayList<ChessMove> oponentMoves = current.getPossibleMoves(c.oposite());
@@ -14,6 +30,12 @@ public class AvoidAttacksStrategy implements IMoveStrategy {
           println("CHECKING: " + current.getDisplayString(myMove));
           println(String.valueOf(myMove.fromI) + String.valueOf(oponentMove.toI));
           if (myMove.fromI == oponentMove.toI && myMove.fromJ == oponentMove.toJ){
+            // DON't DO THE MOVE IF BEING ACTIVELY ATTACKED
+            for(ChessMove oponentMove2 : this.getAttackingMoves(current, c)){
+              if (oponentMove2.toI == myMove.toI && oponentMove2.toJ == myMove.toJ){
+                
+              }
+            }
             println("AVOIDING " + current.getDisplayString(myMove.fromI, myMove.fromJ));
             return myMove;
           }
