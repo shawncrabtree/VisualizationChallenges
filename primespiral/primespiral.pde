@@ -6,7 +6,7 @@ void setup(){
   stroke(255);
 }
 int N = 200000;
-int stepSize = 2;
+int stepSize = 3;
 int x = 0, y = 0;
 int prevX = 0, prevY = 0;
 Direction direction = Direction.Up;
