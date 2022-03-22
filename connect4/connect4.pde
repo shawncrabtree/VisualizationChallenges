@@ -11,6 +11,12 @@ void setup() {
   println("TESTS: " + new Tests().run());
   board.drop(0, Square.Red);
   board.drop(numCols-1, Square.Black);
+
+  board.put(0, 3, Square.Black);
+  board.put(1, 2, Square.Black);
+  board.put(2, 1, Square.Black);
+  board.put(3, 0, Square.Black);
+  println("WINNER: "+ board.winner());
 }
 
 void draw() {

@@ -4,6 +4,8 @@ class Tests {
     println("RUNNING TESTS");
     return new RowWinnerTests().run()
       && new ColWinnerTests().run()
+      && new UpRightWinnerTests().run()
+      && new UpLeftWinnerTests().run()
       ;
   }
 }
