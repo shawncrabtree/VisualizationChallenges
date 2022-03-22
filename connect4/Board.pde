@@ -1,4 +1,12 @@
 class Board {
+  public Board() {
+    _board = new Square[numRows][numCols];
+  }
+
+  private Board(Square[][] board) {
+    _board = board;
+  }
+
   public void draw() {
     for (int i = 1; i <= numRows; i++) {
       line(0, i * squareSize, squareSize * numCols, i * squareSize);
@@ -19,7 +27,17 @@ class Board {
     }
   }
 
-  private Square[][] _board = new Square[numRows][numCols];
+  public Board clone() {
+    Square [][] squares = new Square[numRows][numCols];
+    for (int i = 0; i< _board.length; i++) {
+      for (int j = 0; j < _board[i].length; j++) {
+        squares[i][j] = _board[i][j];
+      }
+    }
+    return new Board(squares);
+  }
+
+  private Square[][] _board;
   public void drop(int c, Square s) {
     for (int r = 0; r < numRows; r++) {
       if (_board[numRows-1-r][c] == null) {
