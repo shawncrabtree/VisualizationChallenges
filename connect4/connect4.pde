@@ -1,22 +1,25 @@
-Square nextMove = Square.Red;
+Square player = Square.Red;
+
 int numRows = 6;
 int numCols = 7;
 int squareSize = 120;
 int FOUR = 4;
 Board board = new Board();
 
+private Square otherPlayer(Square s) {
+  return s == Square.Red ? Square.Black : Square.Red;
+}
+
 void setup() {
   size(1200, 1200);
   background(255);
   println("TESTS: " + new Tests().run());
-  board.drop(0, Square.Red);
-  board.drop(numCols-1, Square.Black);
 
-  board.put(0, 3, Square.Black);
-  board.put(1, 2, Square.Black);
-  board.put(2, 1, Square.Black);
-  board.put(3, 0, Square.Black);
-  println("WINNER: "+ board.winner());
+  // board.put(0, 3, Square.Black);
+  //board.put(1, 2, Square.Black);
+  //board.put(2, 1, Square.Black);
+  //board.put(3, 0, Square.Black);
+  //println("WINNER: "+ board.winner());
 }
 
 void draw() {
@@ -27,12 +30,20 @@ void draw() {
 void mouseClicked() {
   int colClicked = mouseX / squareSize;
   if (colClicked < numCols) {
-    board.drop(colClicked, nextMove);
+    board.drop(colClicked, player);
 
     Square winner = board.winner();
-    if (winner != null) {
-      println("WINNNNERENRENRENR");
+    if (winner == player) {
+      println("PLAYER WINNNNS");
+    }
+    
+    Square computerPlayer = otherPlayer(player);
+    int computerPlay = new AvoidDefeatStrategy(board).pickMove(computerPlayer);
+    board.drop(computerPlay, computerPlayer);
+    
+    winner = board.winner();
+    if (winner == computerPlayer) {
+      println("COMPUTER WINNNNNNS");
     }
   }
-  nextMove = nextMove == Square.Red ? Square.Black : Square.Red;
 }
