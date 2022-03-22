@@ -30,6 +30,23 @@ class Board {
     }
     println("GAVE UP");
   }
+  
+  // for testing purposes
+  public void put(int c, int r, Square s){
+    _board[c][r] = s;
+  }
+
+  public Square winner() {
+    // check for 4 in a row
+    for (int r = 0; r < numRows; r++) {
+      Square w = rowHasWinner(r);
+      if (w != null) {
+        return w;
+      }
+    }
+    return null;
+  }
+  
 
   private Square rowHasWinner(int r) {
     for (int c = 0; c < numCols - FOUR + 1; c++) {
@@ -52,16 +69,5 @@ class Board {
       }
     }
     return s;
-  }
-
-  public Square winner() {
-    // check for 4 in a row
-    for (int r = 0; r < numRows; r++) {
-      Square w = rowHasWinner(r);
-      if (w != null) {
-        return w;
-      }
-    }
-    return null;
   }
 }
