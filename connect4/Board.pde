@@ -45,7 +45,6 @@ class Board {
         return;
       }
     }
-    println("GAVE UP");
   }
 
   // for testing purposes

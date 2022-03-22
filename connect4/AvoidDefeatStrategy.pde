@@ -1,11 +1,5 @@
 public class AvoidDefeatStrategy{
-  
-  private Board board;
-  public AvoidDefeatStrategy(Board b){
-    board = b;
-  }
-  
-  public int pickMove(Square s){
+  public int pickMove(Board board, Square s){
     for (int c = 0; c < numCols; c++){
       Board clonedBoard = board.clone();
       clonedBoard.drop(c, otherPlayer(s));

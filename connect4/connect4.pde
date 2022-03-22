@@ -36,11 +36,11 @@ void mouseClicked() {
     if (winner == player) {
       println("PLAYER WINNNNS");
     }
-    
+
     Square computerPlayer = otherPlayer(player);
-    int computerPlay = new AvoidDefeatStrategy(board).pickMove(computerPlayer);
+    int computerPlay = new MinimaxStrategy().pickMove(board, computerPlayer);
     board.drop(computerPlay, computerPlayer);
-    
+
     winner = board.winner();
     if (winner == computerPlayer) {
       println("COMPUTER WINNNNNNS");
