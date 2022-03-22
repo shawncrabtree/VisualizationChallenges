@@ -1,0 +1,4 @@
+enum Square {
+  Red,
+  Black
+}
