@@ -30,10 +30,10 @@ class Board {
     }
     println("GAVE UP");
   }
-  
+
   // for testing purposes
-  public void put(int c, int r, Square s){
-    _board[c][r] = s;
+  public void put(int r, int c, Square s) {
+    _board[r][c] = s;
   }
 
   public Square winner() {
@@ -44,9 +44,15 @@ class Board {
         return w;
       }
     }
+    for (int c = 0; c < numCols; c++) {
+      Square w = colHasWinner(c);
+      if (w != null) {
+        return w;
+      }
+    }
     return null;
   }
-  
+
 
   private Square rowHasWinner(int r) {
     for (int c = 0; c < numCols - FOUR + 1; c++) {
@@ -65,6 +71,29 @@ class Board {
     }
     for (int i = 1; i < FOUR; i++) {
       if (s != _board[r][c+i]) {
+        return null;
+      }
+    }
+    return s;
+  }
+
+  private Square colHasWinner(int c) {
+    for (int r = 0; r < numRows - FOUR + 1; r++) {
+      Square s = col4HasWinner(r, c);
+      if (s != null) {
+        return s;
+      }
+    }
+    return null;
+  }
+
+  private Square col4HasWinner(int r, int c) {
+    Square s = _board[r][c];
+    if (s == null) {
+      return null;
+    }
+    for (int i = 1; i < FOUR; i++) {
+      if (s != _board[r+i][c]) {
         return null;
       }
     }
