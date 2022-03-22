@@ -6,6 +6,7 @@ class Tests {
       && new ColWinnerTests().run()
       && new UpRightWinnerTests().run()
       && new UpLeftWinnerTests().run()
+      && new MinimaxTests().run()
       ;
   }
 }

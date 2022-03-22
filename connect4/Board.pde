@@ -27,6 +27,18 @@ class Board {
     }
   }
 
+  public int getSquareCount() {
+    int coloredSquares = 0;
+    for (int i = 0; i< _board.length; i++) {
+      for (int j = 0; j < _board[i].length; j++) {
+        if (_board[i][j] != null) {
+          coloredSquares++;
+        }
+      }
+    }
+    return coloredSquares;
+  }
+
   public Board clone() {
     Square [][] squares = new Square[numRows][numCols];
     for (int i = 0; i< _board.length; i++) {
@@ -38,13 +50,14 @@ class Board {
   }
 
   private Square[][] _board;
-  public void drop(int c, Square s) {
+  public boolean drop(int c, Square s) {
     for (int r = 0; r < numRows; r++) {
       if (_board[numRows-1-r][c] == null) {
         _board[numRows-1-r][c] = s;
-        return;
+        return true;
       }
     }
+    return false;
   }
 
   // for testing purposes
